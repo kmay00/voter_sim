@@ -92,8 +92,10 @@ module Election
   def print_list(group)
     group.each do |people|
       if people.class == Politician
+        puts "\nPoliticians:"
         puts "#{people.class}, #{people.name}, #{people.party}"
       else
+        puts "\nVoters:"
         puts "#{people.class}, #{people.name}, #{people.affiliation}"
       end
     end
@@ -101,7 +103,30 @@ module Election
 
   def update
     case get_politician_or_voter
-    when "p" 
+    when "p"
+      update_politician
+    when "v"
+      update_voter
+      # print_list(@world.voters)
+      # puts "\nWho would you like to update?"
+      # input = gets.chomp
+      # update_index = @world.voters.index { |person| person.name == input }
+      # puts "\nUpdate (N)ame or (P)arty?"
+      # input = gets.chomp.downcase
+      # case input
+      # when "n"
+      #   @world.voters[update_index].name = input_name
+      #   main_menu
+      # when "p"
+      #   @world.voters[update_index].affiliation = input_affiliation
+      #   main_menu
+      # end
+    else
+      main_menu
+    end
+  end 
+
+  def update_politician
       print_list(@world.politicians)
       puts "\nWho would you like to update?"
       input = gets.chomp
@@ -115,27 +140,26 @@ module Election
       when "a"
         @world.politicians[update_index].party = input_party
         main_menu
-      end
-    when "v"
-      print_list(@world.voters)
-      puts "\nWho would you like to update?"
-      input = gets.chomp
-      update_index = @world.voters.index { |person| person.name == input }
-      puts "Update (N)ame or (P)arty?"
-      input = gets.chomp.downcase
-      case input
-      when "n"
-        @world.voters[update_index].name = input_name
-        main_menu
-      when "p"
-        @world.voters[update_index].affiliation = input_affiliation
-        main_menu
-      end
-    else
+      end  
+  end
+
+  def update_voter
+    print_list(@world.voters)
+    puts "\nWho would you like to update?"
+    input = gets.chomp
+    update_index = @world.voters.index { |person| person.name == input }
+    puts "\nUpdate (N)ame or (P)arty?"
+    input = gets.chomp.downcase
+    case input
+    when "n"
+      @world.voters[update_index].name = input_name
+      main_menu
+    when "p"
+      @world.voters[update_index].affiliation = input_affiliation
       main_menu
     end
-  end 
-
+  end
+  
   def delete(group)
     puts "\nWho would you like to delete?"
     input = gets.chomp
